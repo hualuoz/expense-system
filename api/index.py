@@ -1,8 +1,10 @@
 """
 Vercel Serverless 入口 — 财务报销系统 v1.5
 
-将 Flask App 适配为 Vercel Serverless Function。
-部署后别人通过 https://xxx.vercel.app 即可访问。
+Vercel 要求:
+  - 文件在 api/ 目录下
+  - 导出名为 app 的 WSGI 应用实例
+  - 每个请求由 Vercel 路由到此文件处理
 """
 
 import os
@@ -13,17 +15,15 @@ import sys
 WEB_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, WEB_DIR)
 
-# scripts 已复制到 web/ 目录下，无需再查找上级目录
-
 from app.dao.db import init_db
-from app import create_app
 
-# 初始化数据库（Vercel 每次冷启动都执行，幂等操作）
+# 初始化数据库（幂等操作，重复调用安全）
 init_db()
 
-# 创建 Flask 应用
+from app import create_app
+
+# ✅ Vercel 要求: 导出名为 app 的 WSGI 应用实例
 app = create_app()
 
-# Vercel 要求的 WSGI 入口
-# noinspection PyUnresolvedReferences
-from app import app as application
+# ✅ 同时导出 application，兼容某些 WSGI 服务器
+application = app
