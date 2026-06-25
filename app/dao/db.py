@@ -17,7 +17,12 @@ from datetime import datetime
 
 # DB 路径: web/data.db (本项目根目录)
 # db.py 在 web/app/dao/ 下，往上 3 级才是 web/
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data.db")
+# Vercel Serverless: 文件系统只读，只有 /tmp 可写
+_LOCAL_DB = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "data.db")
+if os.environ.get("VERCEL") or os.environ.get("VERCEL_ENV"):
+    DB_PATH = os.path.join("/tmp", "expense_data.db")
+else:
+    DB_PATH = _LOCAL_DB
 
 
 # ============ 状态常量 ============

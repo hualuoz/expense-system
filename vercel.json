@@ -3,7 +3,17 @@
   "builds": [
     {
       "src": "api/index.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": [
+          "app/**",
+          "templates/**",
+          "validate_expense.py",
+          "file_parser.py",
+          "policy.md",
+          "expense-categories.md"
+        ]
+      }
     }
   ],
   "routes": [
