@@ -4,30 +4,9 @@
     {
       "src": "api/index.py",
       "use": "@vercel/python"
-    },
-    {
-      "src": "templates/index.html",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
-    { "src": "/api/v1/(.*)", "dest": "api/index.py" },
-    { "src": "/exports/(.*)", "dest": "api/index.py" },
-    { "src": "/parse-file", "dest": "api/index.py" },
-    { "src": "/export/(.*)", "dest": "api/index.py" },
-    { "src": "/export-download/(.*)", "dest": "api/index.py" },
-    { "src": "/validate", "dest": "api/index.py" },
-    { "src": "/validate-batch", "dest": "api/index.py" },
-    { "src": "/policy", "dest": "api/index.py" },
-    { "src": "/categories", "dest": "api/index.py" },
-    { "src": "/audit/(.*)", "dest": "api/index.py" },
-    { "src": "/guard/(.*)", "dest": "api/index.py" },
-    { "src": "/rules", "dest": "api/index.py" },
-    { "src": "/tasks/(.*)", "dest": "api/index.py" },
-    { "src": "/logs", "dest": "api/index.py" },
-    { "src": "/summary", "dest": "api/index.py" },
-    { "src": "/auth/(.*)", "dest": "api/index.py" },
-    { "src": "/reimbursements(.*)", "dest": "api/index.py" },
     { "src": "/(.*)", "dest": "api/index.py" }
   ]
 }
