@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>财务报销系统 v1.5</title>
+<title>财务报销系统 v2.0</title>
 <style>
 :root{--primary:#1e40af;--p-l:#3b82f6;--p-ll:#dbeafe;--p-d:#1e3a8a;--ok:#059669;--ok-bg:#ecfdf5;--warn:#d97706;--warn-bg:#fffbeb;--err:#dc2626;--err-bg:#fef2f2;--info:#2563eb;--info-bg:#eff6ff;--bg:#f1f5f9;--card:#fff;--text:#0f172a;--t2:#475569;--t3:#94a3b8;--bd:#e2e8f0;--sw:220px;--hh:56px;--r:8px}
 *{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
 .header{position:fixed;top:0;left:var(--sw);right:0;height:var(--hh);background:#fff;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:50}
 .header-left{font-size:15px;font-weight:700;color:var(--primary)}
 .sidebar{position:fixed;top:0;left:0;width:var(--sw);height:100vh;background:linear-gradient(180deg,#1e3a8a,#1e40af);color:#fff;z-index:60;display:flex;flex-direction:column}
-.sidebar-logo{padding:14px 20px;font-size:17px;font-weight:800;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;min-height:var(--hh)}
+.sidebar-logo{padding:14px 20px;font-size:16px;font-weight:800;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px;min-height:var(--hh)}
 .sidebar-nav{flex:1;padding:8px 0;overflow-y:auto}
 .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.65);font-size:13px}
 .nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
@@ -29,12 +29,14 @@
 .btn-o{background:#fff;color:var(--t2);border:1px solid var(--bd)}.btn-o:hover{background:var(--bg)}
 .btn-sm{padding:4px 10px;font-size:12px}
 .btn-link{background:none;border:none;color:var(--p-l);cursor:pointer;font-size:13px;padding:0}.btn-link:hover{text-decoration:underline}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
 .badge-DRAFT{background:#e2e8f0;color:#475569}.badge-SUBMITTED{background:#fef3c7;color:#92400e}
-.badge-UNDER_REVIEW{background:#dbeafe;color:#1e40af}.badge-APPROVED{background:#d1fae5;color:#065f46}
-.badge-REJECTED{background:#fee2e2;color:#991b1b}.badge-REIMBURSED{background:#a7f3d0;color:#065f46}
-.badge-PENDING{background:#fef3c7;color:#92400e}.badge-APPROVED_STEP{background:#d1fae5;color:#065f46}
-.badge-REJECTED_STEP{background:#fee2e2;color:#991b1b}
+.badge-DEPT_APPROVING{background:#dbeafe;color:#1e40af}.badge-FINANCE_REVIEWING{background:#e0e7ff;color:#3730a3}
+.badge-APPROVED{background:#d1fae5;color:#065f46}.badge-REJECTED{background:#fee2e2;color:#991b1b}
+.badge-PAYMENT_PENDING{background:#fef3c7;color:#92400e}.badge-PAID{background:#a7f3d0;color:#065f46}
+.badge-ARCHIVED{background:#e2e8f0;color:#475569}
+.badge-risk_high{background:#fee2e2;color:#991b1b}.badge-risk_medium{background:#fef3c7;color:#92400e}.badge-risk_none{background:#d1fae5;color:#065f46}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{background:#f8fafc;padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--bd);color:var(--t2);white-space:nowrap}
 td{padding:10px 12px;border-bottom:1px solid var(--bd)}tr:hover td{background:#f8fafc}
@@ -43,10 +45,10 @@ td{padding:10px 12px;border-bottom:1px solid var(--bd)}tr:hover td{background:#f
 .form-group input,.form-group select,.form-group textarea{width:100%;padding:8px 12px;border:1px solid var(--bd);border-radius:6px;font-size:13px;transition:border .2s}
 .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--p-l);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
 .fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
 .stat-card{background:#fff;border-radius:var(--r);padding:16px;border:1px solid var(--bd)}
 .stat-card .label{font-size:12px;color:var(--t3);margin-bottom:4px}.stat-card .value{font-size:22px;font-weight:800;color:var(--primary)}
-.upload-zone{border:2px dashed var(--bd);border-radius:var(--r);padding:24px 20px;text-align:center;cursor:pointer;transition:all .25s;background:#fafbff}
+.upload-zone{border:2px dashed var(--bd);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:all .25s;background:#fafbff}
 .upload-zone:hover{border-color:var(--p-l);background:#eff6ff}
 .upload-zone input[type=file]{display:none}
 .tag{background:var(--p-ll);color:var(--p-d);padding:1px 6px;border-radius:3px;font-size:11px}
@@ -57,414 +59,362 @@ td{padding:10px 12px;border-bottom:1px solid var(--bd)}tr:hover td{background:#f
 .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(59,130,246,.2);border-top-color:var(--p-l);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .login-box{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center}
-.login-card{background:#fff;border-radius:12px;padding:36px 32px;width:380px;box-shadow:0 8px 30px rgba(0,0,0,.1)}
+.login-card{background:#fff;border-radius:12px;padding:36px 32px;width:420px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.1)}
 .login-card h2{text-align:center;margin-bottom:6px;font-size:22px;color:var(--primary)}
 .login-card p{text-align:center;color:var(--t3);font-size:13px;margin-bottom:24px}
 .login-card .user-btn{width:100%;padding:12px;margin-bottom:8px;border:1px solid var(--bd);border-radius:8px;background:#fff;cursor:pointer;font-size:13px;text-align:left;display:flex;align-items:center;gap:10px;transition:all .15s}
 .login-card .user-btn:hover{border-color:var(--p-l);background:var(--p-ll)}
 .step-flow{display:flex;align-items:center;gap:4px;margin-bottom:16px;flex-wrap:wrap}
 .step-dot{padding:4px 10px;border-radius:12px;font-size:11px;font-weight:600;background:#e2e8f0;color:#475569}
-.step-dot.done{background:#d1fae5;color:#065f46}.step-dot.current{background:var(--p-ll);color:var(--primary)}
+.step-dot.done{background:#d1fae5;color:#065f46}.step-dot.current{background:var(--p-ll);color:var(--primary)}.step-dot.rejected{background:#fee2e2;color:#991b1b}
 .step-arrow{color:var(--t3);font-size:12px}
 .guard-ok{background:var(--ok-bg);border:1px solid var(--ok);border-radius:6px;padding:12px;text-align:center;font-weight:700;color:var(--ok)}
 .guard-err{background:var(--err-bg);border:1px solid var(--err);border-radius:6px;padding:12px;margin-bottom:8px}
+.check-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px}
+.check-item input[type=checkbox]{width:16px;height:16px}
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--bd);margin-bottom:16px}
+.tab-btn{padding:8px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-2px}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary)}
+.att-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--bd);border-radius:6px;margin-bottom:6px;font-size:12px;background:#f8fafc}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal-box{background:#fff;border-radius:12px;padding:24px;width:90%;max-width:780px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.timeline-item{display:flex;gap:12px;padding:8px 0;font-size:12px;border-left:2px solid var(--bd);padding-left:16px;position:relative}
+.timeline-item::before{content:'';position:absolute;left:-5px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--p-l)}
+.timeline-item.done::before{background:var(--ok)}.timeline-item.rejected::before{background:var(--err)}
 </style>
 </head>
 <body>
-
 <div class="login-box" id="loginBox">
 <div class="login-card">
 <h2>💰 财务报销系统</h2>
-<p>v1.5 · 状态机 + 配置化审批流 + 幂等性</p>
+<p>v2.0 · 状态机 + 多级审批 + 凭证审核 + 付款复核 + 归档</p>
 <div id="loginBtns"></div>
 </div>
 </div>
-
 <aside class="sidebar" id="sidebar" style="display:none">
-<div class="sidebar-logo">💰 <span>报销系统 v1.5</span></div>
+<div class="sidebar-logo">💰 <span>报销系统 v2.0</span></div>
 <nav class="sidebar-nav" id="navNav"></nav>
-<div class="sidebar-footer">v1.5 · StateMachine + WorkflowEngine</div>
+<div class="sidebar-footer">v2.0 · StateMachine + RBAC + DataGuard</div>
 </aside>
-
 <header class="header" id="headerBar" style="display:none">
 <div class="header-left" id="pageTitle">工作台</div>
 <div style="display:flex;align-items:center;gap:14px">
+<select id="roleSwitch" onchange="switchRole(this.value)" style="padding:4px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px"></select>
 <span id="userInfo" style="font-size:13px;color:var(--t2)"></span>
 <button class="btn btn-o btn-sm" onclick="logout()">退出</button>
 </div>
 </header>
-
 <div class="toast-box" id="toastBox"></div>
-
 <div class="main" id="mainArea" style="display:none">
-
 <!-- 工作台 -->
-<div class="page active" id="page-dashboard"><div class="stat-grid" id="dashStats"></div><div class="card"><div class="card-title">📋 最近报销记录</div><div style="overflow-x:auto"><table><thead><tr><th>单号</th><th>申请人</th><th>金额</th><th>状态</th><th>审批流</th><th>时间</th><th>操作</th></tr></thead><tbody id="dashBody"></tbody></table></div></div></div>
-
+<div class="page active" id="page-dashboard">
+<div class="stat-grid" id="dashStats"></div>
+<div class="card"><div class="card-title">📋 最近报销记录</div>
+<div style="overflow-x:auto"><table><thead><tr><th>单号</th><th>申请人</th><th>金额</th><th>状态</th><th>风险</th><th>时间</th><th>操作</th></tr></thead><tbody id="dashBody"></tbody></table></div></div>
+</div>
 <!-- 提交报销 -->
 <div class="page" id="page-submit">
-<div class="card"><div class="card-title">📁 上传文件识别费用（可选）</div>
+<div class="card"><div class="card-title">📁 上传文件识别（可选）</div>
 <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-<div style="font-size:28px;margin-bottom:6px">📄</div><div style="font-weight:700;margin-bottom:4px">点击上传或拖拽文件</div><div style="color:var(--t3);font-size:12px">PDF / Excel / Word / 图片 / CSV → 异步OCR识别</div>
-<input type="file" id="fileInput" accept=".pdf,.xlsx,.xls,.docx,.doc,.png,.jpg,.jpeg,.csv" onchange="handleUpload(this)">
+<div style="font-size:28px;margin-bottom:6px">📄</div><div style="font-weight:700;margin-bottom:4px">点击上传或拖拽文件</div><div style="color:var(--t3);font-size:12px">PDF/Excel/图片 → OCR识别</div>
+<input type="file" id="fileInput" accept=".pdf,.xlsx,.xls,.png,.jpg,.jpeg,.csv" onchange="handleUpload(this)">
 </div><div id="parseResult"></div></div>
-<div class="card"><div class="card-title">✏️ 费用明细</div><div id="itemsContainer"></div>
-<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-o" onclick="addItem()">+ 添加一行</button><button class="btn btn-o" onclick="fillDemo()">📋 示例数据</button></div></div>
-<div class="card"><div class="card-title">🚀 验证并提交</div>
-<div style="display:flex;gap:10px;align-items:center"><button class="btn btn-p" onclick="submitReimb()">🔍 验证并提交</button><span id="submitStatus"></span></div>
-<div id="submitResult"></div></div>
+<div class="card"><div class="card-title">📝 基本信息</div>
+<div class="fr3">
+<div class="form-group"><label>费用类型 <span class="req">*</span></label><select id="fExpenseType"></select></div>
+<div class="form-group"><label>报销事由 <span class="req">*</span></label><textarea id="fReason" rows="2" placeholder="至少10个字"></textarea></div>
+<div class="form-group"><label>发生日期</label><input type="date" id="fDate"></div>
 </div>
-
+<div class="fr3">
+<div class="form-group"><label>发票号码 <span class="req">*</span></label><input id="fInvoiceNo"></div>
+<div class="form-group"><label>发票金额</label><input type="number" step="0.01" id="fInvoiceAmt"></div>
+<div class="form-group"><label>发票日期</label><input type="date" id="fInvoiceDate"></div>
+</div></div>
+<div class="card"><div class="card-title">💳 收款信息</div>
+<div class="fr3">
+<div class="form-group"><label>收款账户名称 <span class="req">*</span></label><input id="fAccountName"></div>
+<div class="form-group"><label>收款账号 <span class="req">*</span></label><input id="fAccountNumber"></div>
+<div class="form-group"><label>开户行 <span class="req">*</span></label><input id="fBankName"></div>
+</div></div>
+<div class="card"><div class="card-title">📎 附件 <span class="req">*</span></div>
+<div class="upload-zone" onclick="document.getElementById('attFileInput').click()">
+<div style="font-size:24px">📎</div><div>点击上传附件</div>
+<input type="file" id="attFileInput" multiple accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" onchange="handleAttUpload(this)">
+</div><div id="attList" style="margin-top:10px"></div></div>
+<div class="card"><div class="card-title">✏️ 费用明细</div><div id="itemsContainer"></div>
+<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-o" onclick="addItem()">+ 添加一行</button><button class="btn btn-o" onclick="fillDemo()">📋 示例</button></div></div>
+<div class="card"><div style="display:flex;gap:10px"><button class="btn btn-o" onclick="saveDraft()">💾 保存草稿</button><button class="btn btn-p" onclick="submitReimb()">🔍 验证并提交</button></div>
+<div id="submitResult" style="margin-top:10px"></div></div>
+</div>
 <!-- 报销列表 -->
 <div class="page" id="page-list">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-<div class="card-title" style="margin:0">📋 全部报销单</div>
-<div style="display:flex;gap:8px">
-<select id="listFilter" onchange="loadList()" style="padding:6px 10px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
-<option value="ALL">全部状态</option><option value="SUBMITTED">已提交</option><option value="UNDER_REVIEW">审核中</option><option value="APPROVED">已通过</option><option value="REJECTED">已驳回</option><option value="REIMBURSED">已打款</option>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+<div class="card-title" style="margin:0">📋 报销单列表</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<select id="listStatus" onchange="loadList()" style="padding:5px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+<option value="ALL">全部状态</option><option value="SUBMITTED">已提交</option><option value="DEPT_APPROVING">部门审批中</option><option value="FINANCE_REVIEWING">财务审核中</option><option value="APPROVED">已通过</option><option value="REJECTED">已驳回</option><option value="PAYMENT_PENDING">待付款</option><option value="PAID">已打款</option><option value="ARCHIVED">已归档</option>
+</select>
+<select id="listRisk" onchange="loadList()" style="padding:5px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+<option value="">全部风险</option><option value="high">高风险</option><option value="medium">中风险</option><option value="none">无风险</option>
 </select>
 <button class="btn btn-p btn-sm" onclick="go('submit')">+ 新建</button>
 </div></div>
-<div class="card"><div style="overflow-x:auto"><table><thead><tr><th>单号</th><th>申请人</th><th>部门</th><th>金额</th><th>状态</th><th>版本</th><th>审批流</th><th>时间</th><th>操作</th></tr></thead><tbody id="listBody"></tbody></table></div></div>
+<div class="card"><div style="overflow-x:auto"><table><thead><tr><th>单号</th><th>申请人</th><th>部门</th><th>费用类型</th><th>金额</th><th>状态</th><th>风险</th><th>时间</th><th>操作</th></tr></thead><tbody id="listBody"></tbody></table></div></div>
 </div>
-
-<!-- 审核 -->
+<!-- 合规审核 -->
 <div class="page" id="page-audit">
-<div class="card"><div class="card-title">🔍 合规审核与审批</div>
-<p style="color:var(--t2);font-size:13px;margin-bottom:12px">选择报销单 → 自动合规审计 → 审批通过/驳回</p>
-<select id="auditSelect" style="width:100%;max-width:400px;padding:8px 12px;border:1px solid var(--bd);border-radius:6px;font-size:13px"><option value="">-- 请选择 --</option></select>
-<button class="btn btn-p" onclick="runAudit()" style="margin-left:10px">🚀 开始审核</button></div>
-<div id="auditResult"></div>
+<div class="tab-bar">
+<button class="tab-btn active" onclick="switchAuditTab('pending')">待部门审批</button>
+<button class="tab-btn" onclick="switchAuditTab('finance')">待财务审核</button>
+<button class="tab-btn" onclick="switchAuditTab('payment')">待付款</button>
 </div>
-
-<!-- 汇总 -->
+<div id="auditList"></div>
+</div>
+<!-- 汇总统计 -->
 <div class="page" id="page-summary">
 <div class="stat-grid" id="sumStats"></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
 <div class="card"><div class="card-title">📂 按类别</div><div id="sumByCat"></div></div>
+<div class="card"><div class="card-title">🏢 按部门</div><div id="sumByDept"></div></div>
+</div>
 <div class="card"><div class="card-title">📅 按状态</div><div id="sumByStatus"></div></div>
-</div></div>
-
-<!-- 日志 -->
+</div>
+<!-- 审计日志 -->
 <div class="page" id="page-logs">
-<div class="card"><div class="card-title">📜 操作审计日志</div>
-<div style="overflow-x:auto"><table><thead><tr><th>时间</th><th>用户</th><th>操作</th><th>对象</th><th>变更前</th><th>变更后</th></tr></thead><tbody id="logsBody"></tbody></table></div></div>
+<div class="card"><div class="card-title">📜 审计日志</div>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+<input id="logTarget" placeholder="报销单号" style="padding:5px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px;width:160px">
+<input id="logAction" placeholder="操作类型" style="padding:5px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px;width:120px">
+<input type="date" id="logStart" style="padding:5px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+<input type="date" id="logEnd" style="padding:5px 8px;border:1px solid var(--bd);border-radius:6px;font-size:12px">
+<button class="btn btn-p btn-sm" onclick="loadLogs()">查询</button>
+<button class="btn btn-o btn-sm" onclick="exportLogs()">导出JSON</button>
 </div>
-
-<!-- Data Guard -->
+<div style="overflow-x:auto"><table><thead><tr><th>时间</th><th>操作人</th><th>角色</th><th>操作</th><th>对象</th><th>原状态</th><th>新状态</th><th>详情</th></tr></thead><tbody id="logsBody"></tbody></table></div></div>
+</div>
+<!-- 数据守护 -->
 <div class="page" id="page-guard">
-<div class="card"><div class="card-title">🛡️ 数据一致性检查 (Data Guard)</div>
-<p style="color:var(--t2);font-size:13px;margin-bottom:12px">检测orphan记录、非法金额、状态异常、审批链断裂等数据问题</p>
+<div class="card"><div class="card-title">🛡️ 数据一致性检查</div>
+<p style="color:var(--t2);font-size:13px;margin-bottom:12px">检测缺失附件、重复发票、越级流转、不相容岗位、无凭证打款等</p>
 <button class="btn btn-p" onclick="runGuard()">🛡️ 执行检查</button>
-<div id="guardResult" style="margin-top:16px"></div>
+<div id="guardResult" style="margin-top:16px"></div></div>
+<div class="card"><div class="card-title">📋 审批规则</div><div id="rulesContent"></div></div>
 </div>
-<div class="card"><div class="card-title">📋 审批规则（配置化，不改代码）</div><div id="rulesContent"></div></div>
 </div>
-
-</div>
-
 <script>
-// 动态获取API基础路径，部署到任何域名都能正确访问
 const API=window.location.origin+'/api/v1';
-const CAT={'TRAVEL-TRANSPORT':'差旅-交通','TRAVEL-LODGING':'差旅-住宿','TRAVEL-MEAL':'差旅-餐饮','OFFICE-SUPPLIES':'办公-用品','ENTERTAIN-MEAL':'招待-餐饮','TRANSPORT-TAXI':'交通-出租','OTHER-MISC':'其他'};
-const SD={DRAFT:'草稿',SUBMITTED:'已提交',UNDER_REVIEW:'审核中',APPROVED:'已通过',REJECTED:'已驳回',REIMBURSED:'已打款'};
-let U=null,items=[newI()];
-
+const CAT={'TRAVEL-TRANSPORT':'差旅-交通','TRAVEL-LODGING':'差旅-住宿','TRAVEL-MEAL':'差旅-餐饮','OFFICE-SUPPLIES':'办公-用品','ENTERTAIN-MEAL':'招待-餐饮','TRANSPORT-TAXI':'交通-出租','LODGING-HOTEL':'住宿-酒店','PURCHASE-MATERIAL':'采购-物料','TRAINING-COURSE':'培训-课程','OTHER-MISC':'其他'};
+const ETYPES={'TRAVEL':'差旅费','OFFICE':'办公费','ENTERTAIN':'招待费','TRANSPORT':'交通费','LODGING':'住宿费','PURCHASE':'采购费','TRAINING':'培训费','OTHER':'其他'};
+const SD={DRAFT:'草稿',SUBMITTED:'已提交',DEPT_APPROVING:'部门审批中',FINANCE_REVIEWING:'财务审核中',APPROVED:'已通过',REJECTED:'已驳回',PAYMENT_PENDING:'待付款',PAID:'已打款',ARCHIVED:'已归档'};
+const RD={none:'无风险',medium:'中风险',high:'高风险'};
+const RDCLS={none:'risk_none',medium:'risk_medium',high:'risk_high'};
+const ROLES={'applicant':'申请人','dept_manager':'部门负责人','finance_reviewer':'财务审核','cashier':'出纳','auditor':'审计员','admin':'管理员'};
+let U=null,items=[newI()],curReimbId=null,attFiles=[];
 function newI(){return{date:'',category:'TRAVEL-TRANSPORT',amount:'',description:'',receipt_no:'',city:'',employee_level:'staff'}}
 function rid(){return crypto.randomUUID().replace(/-/g,'').substring(0,16)}
 
-// 登录
-async function initLogin(){
-const r=await fetch(API+'/auth/users');const d=await r.json();
-if(d.code!==0)return;
-document.getElementById('loginBtns').innerHTML=d.data.map(u=>`<button class="user-btn" onclick="doLogin('${u.username}')"><strong>${u.display_name}</strong><span style="font-size:11px;color:var(--t3)">${u.department} · ${u.role}</span></button>`).join('');
-}
-async function doLogin(username){
-const r=await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username})});
-const d=await r.json();if(d.code!==0){alert(d.message);return;}
-U=d.data;localStorage.setItem('user',JSON.stringify(U));
-document.getElementById('loginBox').style.display='none';document.getElementById('sidebar').style.display='flex';document.getElementById('headerBar').style.display='flex';document.getElementById('mainArea').style.display='block';
-buildNav();go('dashboard');
-}
+async function initLogin(){const r=await fetch(API+'/auth/users');const d=await r.json();if(d.code!==0)return;
+document.getElementById('loginBtns').innerHTML=d.data.map(u=>`<button class="user-btn" onclick="doLogin('${u.username}')"><strong>${u.display_name}</strong><span style="font-size:11px;color:var(--t3)">${u.department} · ${ROLES[u.role]||u.role}</span></button>`).join('');}
+async function doLogin(username){const r=await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username})});const d=await r.json();if(d.code!==0){alert(d.message);return;}
+U=d.data;localStorage.setItem('user',JSON.stringify(U));showMain();}
 function logout(){U=null;localStorage.removeItem('user');location.reload();}
 function h(ct){const r={'X-User-ID':U?.user_id||''};if(ct)r['Content-Type']='application/json';return r;}
+function showMain(){document.getElementById('loginBox').style.display='none';document.getElementById('sidebar').style.display='flex';document.getElementById('headerBar').style.display='flex';document.getElementById('mainArea').style.display='block';buildNav();initRoleSwitch();go('dashboard');}
+function initRoleSwitch(){const sel=document.getElementById('roleSwitch');sel.innerHTML=`<option value="">切换身份测试</option>`+Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${U.role===k?'selected':''}>${v}</option>`).join('');}
+async function switchRole(newRole){if(!newRole)return;const r=await fetch(API+'/auth/users');const d=await r.json();const target=d.data.find(u=>u.role===newRole);
+if(target){U={user_id:target.id,username:target.username,display_name:target.display_name,department:target.department,role:target.role};localStorage.setItem('user',JSON.stringify(U));buildNav();go('dashboard');toast(`已切换: ${target.display_name} (${ROLES[target.role]})`,'success');}else{toast('该角色无对应用户','warning');}}
 
-// 导航
 const NAVS=[
-{id:'dashboard',icon:'📊',label:'工作台',roles:['applicant','approver','admin']},
+{id:'dashboard',icon:'📊',label:'工作台',roles:['applicant','dept_manager','finance_reviewer','cashier','auditor','admin']},
 {id:'submit',icon:'📝',label:'提交报销',roles:['applicant','admin']},
-{id:'list',icon:'📋',label:'报销列表',roles:['applicant','approver','admin']},
-{id:'audit',icon:'🔍',label:'合规审核',roles:['approver','admin']},
-{id:'summary',icon:'📈',label:'汇总统计',roles:['approver','admin']},
-{id:'logs',icon:'📜',label:'审计日志',roles:['admin']},
-{id:'guard',icon:'🛡️',label:'数据守护',roles:['admin']},
+{id:'list',icon:'📋',label:'报销列表',roles:['applicant','dept_manager','finance_reviewer','cashier','auditor','admin']},
+{id:'audit',icon:'🔍',label:'合规审核',roles:['dept_manager','finance_reviewer','cashier','admin']},
+{id:'summary',icon:'📈',label:'汇总统计',roles:['dept_manager','finance_reviewer','cashier','auditor','admin']},
+{id:'logs',icon:'📜',label:'审计日志',roles:['finance_reviewer','auditor','admin']},
+{id:'guard',icon:'🛡️',label:'数据守护',roles:['admin','auditor']},
 ];
-function buildNav(){
-document.getElementById('navNav').innerHTML=NAVS.filter(n=>n.roles.includes(U.role)).map(n=>`<div class="nav-item" data-page="${n.id}" onclick="go('${n.id}')"><span class="icon">${n.icon}</span><span>${n.label}</span></div>`).join('');
-document.getElementById('userInfo').innerHTML=`${U.display_name} · ${U.department} <span class="badge badge-${U.role==='admin'?'APPROVED':U.role==='approver'?'UNDER_REVIEW':'SUBMITTED'}">${U.role}</span>`;
-}
-function go(page){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-const el=document.getElementById('page-'+page);if(el)el.classList.add('active');
-const nav=document.querySelector(`.nav-item[data-page="${page}"]`);if(nav)nav.classList.add('active');
-document.getElementById('pageTitle').textContent=NAVS.find(n=>n.id===page)?.label||page;
-if(page==='dashboard')loadDash();if(page==='list')loadList();if(page==='audit')loadAuditSel();if(page==='summary')loadSummary();if(page==='logs')loadLogs();if(page==='guard')loadRules();if(page==='submit')renderItems();
-}
+function buildNav(){document.getElementById('navNav').innerHTML=NAVS.filter(n=>n.roles.includes(U.role)).map(n=>`<div class="nav-item" data-page="${n.id}" onclick="go('${n.id}')"><span class="icon">${n.icon}</span><span>${n.label}</span></div>`).join('');
+document.getElementById('userInfo').innerHTML=`${U.display_name} <span class="badge badge-${U.role==='admin'?'APPROVED':U.role==='finance_reviewer'?'FINANCE_REVIEWING':U.role==='dept_manager'?'DEPT_APPROVING':U.role==='cashier'?'PAYMENT_PENDING':'SUBMITTED'}">${ROLES[U.role]||U.role}</span>`;}
+function go(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const el=document.getElementById('page-'+page);if(el)el.classList.add('active');const nav=document.querySelector(`.nav-item[data-page="${page}"]`);if(nav)nav.classList.add('active');document.getElementById('pageTitle').textContent=NAVS.find(n=>n.id===page)?.label||page;
+if(page==='dashboard')loadDash();if(page==='list')loadList();if(page==='audit')loadAuditTab();if(page==='summary')loadSummary();if(page==='logs')loadLogs();if(page==='guard')loadRules();if(page==='submit')renderSubmit();}
 function toast(msg,type='info'){const c=document.getElementById('toastBox');const t=document.createElement('div');t.className='toast';const ic={success:'✅',error:'❌',warning:'⚠️',info:'💡'};t.innerHTML=`<span>${ic[type]||'💡'}</span><span>${msg}</span>`;c.appendChild(t);setTimeout(()=>t.remove(),3000);}
 
-// 工作台
-async function loadDash(){
-try{
-const r=await fetch(API+'/reimbursements?status=ALL',{headers:h()});const d=await r.json();if(d.code!==0)return;const data=d.data;
-let tot=0;data.forEach(x=>tot+=x.total_amount);
-const byS={};data.forEach(x=>{if(!byS[x.status])byS[x.status]={cnt:0,amt:0};byS[x.status].cnt++;byS[x.status].amt+=x.total_amount;});
-document.getElementById('dashStats').innerHTML=`
-<div class="stat-card"><div class="label">报销总额</div><div class="value">¥${tot.toLocaleString('zh-CN',{minimumFractionDigits:2})}</div><div class="sub" style="font-size:11px;color:var(--t3)">${data.length}笔</div></div>
-<div class="stat-card"><div class="label">待审批</div><div class="value" style="color:var(--warn)">${(byS.SUBMITTED||{}).cnt||(byS.UNDER_REVIEW||{}).cnt||0}</div></div>
-<div class="stat-card"><div class="label">已通过</div><div class="value" style="color:var(--ok)">${(byS.APPROVED||{}).cnt||0}</div></div>
-<div class="stat-card"><div class="label">已打款</div><div class="value" style="color:#065f46">${(byS.REIMBURSED||{}).cnt||0}</div></div>`;
-document.getElementById('dashBody').innerHTML=data.slice(0,15).map(x=>`<tr>
-<td><strong>${x.id}</strong></td><td>${x.applicant_name}</td><td>¥${x.total_amount.toFixed(2)}</td>
-<td><span class="badge badge-${x.status}">${SD[x.status]||x.status}</span></td>
-<td style="font-size:11px">${miniSteps(x.status)}</td><td style="font-size:11px">${x.updated_at}</td>
-<td><button class="btn-link" onclick="viewDetail('${x.id}')">详情</button></td></tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:24px">暂无记录</td></tr>';
-}catch(e){toast('加载失败','error');}
-}
-function miniSteps(s){const st=['SUBMITTED','UNDER_REVIEW','APPROVED','REIMBURSED'];const i=st.indexOf(s);return st.map((x,j)=>`<span style="color:${j<=i?'var(--ok)':'var(--t3)'};font-size:10px">${SD[x]}</span>`).join('<span style="color:var(--t3);font-size:10px">→</span>');}
+async function loadDash(){try{const r=await fetch(API+'/dashboard/stats',{headers:h()});const d=await r.json();if(d.code!==0)return;const s=d.data;
+document.getElementById('dashStats').innerHTML=`<div class="stat-card"><div class="label">报销总额</div><div class="value">¥${(s.total_amount||0).toLocaleString('zh-CN',{minimumFractionDigits:2})}</div><div style="font-size:11px;color:var(--t3)">${s.total_count}笔</div></div><div class="stat-card"><div class="label">待部门审批</div><div class="value" style="color:var(--warn)">${s.pending_dept||0}</div></div><div class="stat-card"><div class="label">待财务审核</div><div class="value" style="color:#7c3aed">${s.pending_finance||0}</div></div><div class="stat-card"><div class="label">待付款</div><div class="value" style="color:#b45309">${s.pending_payment||0}</div></div><div class="stat-card"><div class="label">已打款</div><div class="value" style="color:var(--ok)">${s.paid_count||0}</div></div><div class="stat-card"><div class="label">已驳回</div><div class="value" style="color:var(--err)">${s.rejected_count||0}</div></div><div class="stat-card"><div class="label">高风险</div><div class="value" style="color:var(--err)">${s.high_risk_count||0}</div></div>`;
+const lr=await fetch(API+'/reimbursements?status=ALL',{headers:h()});const ld=await lr.json();
+document.getElementById('dashBody').innerHTML=(ld.data||[]).slice(0,15).map(x=>`<tr><td><strong>${x.reimb_number||x.id}</strong></td><td>${x.applicant_name}</td><td>¥${x.total_amount.toFixed(2)}</td><td><span class="badge badge-${x.status}">${SD[x.status]||x.status}</span></td><td><span class="badge badge-${RDCLS[x.risk_level||'none']}">${RD[x.risk_level||'none']}</span></td><td style="font-size:11px">${x.updated_at}</td><td><button class="btn-link" onclick="viewDetail('${x.id}')">详情</button></td></tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--t3);padding:24px">暂无</td></tr>';
+}catch(e){toast('加载失败','error');}}
 
-// 费用明细
-function renderItems(){
-const c=document.getElementById('itemsContainer');
-c.innerHTML=items.map((it,i)=>`<div style="background:#f8fafc;border:1px solid var(--bd);border-radius:6px;padding:14px;margin-bottom:10px;position:relative">
-${items.length>1?`<button class="btn-link" style="position:absolute;top:8px;right:8px;color:var(--err);font-size:12px" onclick="items.splice(${i},1);renderItems()">✕</button>`:''}
-<div class="fr3">
-<div class="form-group"><label>日期 <span class="req">*</span></label><input type="date" value="${it.date}" onchange="items[${i}].date=this.value"></div>
-<div class="form-group"><label>类别 <span class="req">*</span></label><select onchange="items[${i}].category=this.value;renderItems()">${Object.entries(CAT).map(([k,v])=>`<option value="${k}" ${it.category===k?'selected':''}>${v}</option>`).join('')}</select></div>
-<div class="form-group"><label>金额 <span class="req">*</span></label><input type="number" step="0.01" min="0.01" value="${it.amount}" placeholder="0.00" onchange="items[${i}].amount=this.value"></div>
-</div>
-<div class="fr3">
-<div class="form-group"><label>说明 <span class="req">*</span></label><input value="${it.description}" placeholder="费用用途" onchange="items[${i}].description=this.value"></div>
-<div class="form-group"><label>票据号</label><input value="${it.receipt_no}" placeholder="金额≥200需填写" onchange="items[${i}].receipt_no=this.value"></div>
-<div class="form-group"><label>级别</label><select onchange="items[${i}].employee_level=this.value"><option value="staff" ${it.employee_level==='staff'?'selected':''}>普通员工</option><option value="manager" ${it.employee_level==='manager'?'selected':''}>经理</option><option value="director" ${it.employee_level==='director'?'selected':''}>总监</option></select></div>
-</div></div>`).join('');
-}
+function renderSubmit(){const sel=document.getElementById('fExpenseType');if(sel.options.length<=1)sel.innerHTML=Object.entries(ETYPES).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');renderItems();}
+
+function renderItems(){const c=document.getElementById('itemsContainer');c.innerHTML=items.map((it,i)=>`<div style="background:#f8fafc;border:1px solid var(--bd);border-radius:6px;padding:14px;margin-bottom:10px;position:relative">${items.length>1?`<button class="btn-link" style="position:absolute;top:8px;right:8px;color:var(--err);font-size:12px" onclick="items.splice(${i},1);renderItems()">✕</button>`:''}<div class="fr3"><div class="form-group"><label>日期 <span class="req">*</span></label><input type="date" value="${it.date}" onchange="items[${i}].date=this.value"></div><div class="form-group"><label>类别 <span class="req">*</span></label><select onchange="items[${i}].category=this.value">${Object.entries(CAT).map(([k,v])=>`<option value="${k}" ${it.category===k?'selected':''}>${v}</option>`).join('')}</select></div><div class="form-group"><label>金额 <span class="req">*</span></label><input type="number" step="0.01" min="0.01" value="${it.amount}" onchange="items[${i}].amount=this.value"></div></div><div class="fr2"><div class="form-group"><label>说明 <span class="req">*</span></label><input value="${it.description}" onchange="items[${i}].description=this.value"></div><div class="form-group"><label>票据号</label><input value="${it.receipt_no}" onchange="items[${i}].receipt_no=this.value"></div></div></div>`).join('');}
 function addItem(){items.push(newI());renderItems();}
-function fillDemo(){
-items=[{date:'2026-06-15',category:'TRAVEL-TRANSPORT',amount:'553',description:'北京-上海高铁',receipt_no:'FP20260615001',city:'',employee_level:'staff'},
-{date:'2026-06-15',category:'TRAVEL-LODGING',amount:'498',description:'上海住宿',receipt_no:'FP20260615002',city:'上海',employee_level:'staff'},
-{date:'2026-06-16',category:'TRANSPORT-TAXI',amount:'68',description:'打车',receipt_no:'',city:'',employee_level:'staff'}];
-renderItems();toast('已填入示例','success');
-}
+function fillDemo(){items=[{date:'2026-06-15',category:'TRAVEL-TRANSPORT',amount:'553',description:'北京-上海高铁差旅',receipt_no:'FP20260615001'},{date:'2026-06-15',category:'LODGING-HOTEL',amount:'498',description:'上海出差住宿',receipt_no:'FP20260615002'}];document.getElementById('fExpenseType').value='TRAVEL';document.getElementById('fReason').value='2026年6月上海出差差旅费用报销';document.getElementById('fInvoiceNo').value='FP20260615001';document.getElementById('fInvoiceAmt').value='1051';document.getElementById('fInvoiceDate').value='2026-06-16';document.getElementById('fAccountName').value='张三';document.getElementById('fAccountNumber').value='6222021234567890';document.getElementById('fBankName').value='工商银行上海分行';renderItems();toast('已填入示例','success');}
 
-// 文件上传
-const uz=document.getElementById('uploadZone');
-uz.addEventListener('dragover',e=>{e.preventDefault();uz.style.borderColor='var(--p-l)';});
-uz.addEventListener('dragleave',()=>uz.style.borderColor='');
-uz.addEventListener('drop',e=>{e.preventDefault();uz.style.borderColor='';if(e.dataTransfer.files.length)doUpload(e.dataTransfer.files[0]);});
+async function handleAttUpload(input){if(!input.files.length)return;if(!curReimbId){toast('请先保存草稿','warning');return;}
+for(const f of input.files){const fd=new FormData();fd.append('file',f);fd.append('attachment_type','invoice');
+try{const r=await fetch(API+`/reimbursements/${curReimbId}/attachments`,{method:'POST',headers:{'X-User-ID':U.user_id},body:fd});const d=await r.json();if(d.code!==0){toast(d.message,'error');continue;}attFiles.push({id:d.data.id,file_name:d.data.file_name});toast(`附件 ${f.name} 上传成功`,'success');}catch(e){toast(e.message,'error');}}renderAttList();}
+function renderAttList(){document.getElementById('attList').innerHTML=attFiles.map(a=>`<div class="att-item">📎 ${a.file_name}</div>`).join('')||'<div style="color:var(--t3);font-size:12px">未上传附件</div>';}
+
+const uz=document.getElementById('uploadZone');uz.addEventListener('dragover',e=>{e.preventDefault();uz.style.borderColor='var(--p-l)';});uz.addEventListener('dragleave',()=>uz.style.borderColor='');uz.addEventListener('drop',e=>{e.preventDefault();uz.style.borderColor='';if(e.dataTransfer.files.length)doUpload(e.dataTransfer.files[0]);});
 function handleUpload(input){if(input.files.length)doUpload(input.files[0]);}
-
-async function doUpload(file){
-const pr=document.getElementById('parseResult');
-pr.innerHTML='<div style="padding:12px;text-align:center"><div class="spinner"></div> 上传并异步识别中...</div>';
-const fd=new FormData();fd.append('file',file);
-try{
-const r=await fetch(API+'/parse-file',{method:'POST',headers:{'X-User-ID':U.user_id},body:fd});
-const d=await r.json();if(d.code!==0){pr.innerHTML=`<div class="finding finding-critical">❌ ${d.message}</div>`;return;}
-const tid=d.data.task_id;
-pr.innerHTML='<div style="padding:12px;text-align:center"><div class="spinner"></div> OCR识别中...</div>';
-pollTask(tid,pr,file.name);
-}catch(e){pr.innerHTML=`<div class="finding finding-critical">❌ ${e.message}</div>`;}
-}
-async function pollTask(tid,pr,fn){
-for(let i=0;i<30;i++){
-await new Promise(r=>setTimeout(r,1000));
-try{
-const r=await fetch(API+'/tasks/'+tid,{headers:h()});const d=await r.json();
-if(d.data.status==='COMPLETED'){
-const out=d.data.output;const expenses=out.expenses||[];
-if(!expenses.length){pr.innerHTML='<div class="finding finding-warning">⚠️ 未识别到费用</div>';return;}
-let h=`<div style="background:var(--ok-bg);border:1px solid var(--ok);border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:13px">📁 ${fn} · 识别到 <strong>${expenses.length}</strong> 笔费用</div>`;
-expenses.forEach((e,i)=>{h+=`<div style="background:#f8fafc;border:1px solid var(--bd);border-radius:6px;padding:10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center"><div><strong>¥${parseFloat(e.amount||0).toFixed(2)}</strong> ${e.description||''}<div style="display:flex;gap:4px;margin-top:4px">${e.date?`<span class="tag">📅${e.date}</span>`:''} <span class="tag">📂${CAT[e.category]||e.category}</span></div></div><button class="btn btn-p btn-sm" onclick="addParsed(${i})">填入</button></div>`;});
-h+=`<button class="btn btn-p btn-sm" style="margin-top:6px" onclick="addAllParsed()">全部填入</button>`;
-window._pe=expenses;pr.innerHTML=h;toast(`识别完成: ${expenses.length}笔`,'success');return;
-}
-if(d.data.status==='FAILED'){pr.innerHTML=`<div class="finding finding-critical">❌ OCR失败: ${d.data.error}</div>`;return;}
-}catch(e){}}
-pr.innerHTML='<div class="finding finding-warning">⚠️ 识别超时</div>';
-}
-function addParsed(i){const e=window._pe[i];items.push({...e,amount:String(e.amount||'')});renderItems();toast('已添加','success');}
+async function doUpload(file){const pr=document.getElementById('parseResult');pr.innerHTML='<div style="padding:12px;text-align:center"><div class="spinner"></div></div>';const fd=new FormData();fd.append('file',file);
+try{const r=await fetch(API+'/parse-file',{method:'POST',headers:{'X-User-ID':U.user_id},body:fd});const d=await r.json();if(d.code!==0){pr.innerHTML=`<div class="finding finding-critical">❌ ${d.message}</div>`;return;}pollTask(d.data.task_id,pr,file.name);}catch(e){pr.innerHTML=`<div class="finding finding-critical">❌ ${e.message}</div>`;}}
+async function pollTask(tid,pr,fn){for(let i=0;i<30;i++){await new Promise(r=>setTimeout(r,1000));try{const r=await fetch(API+'/tasks/'+tid,{headers:h()});const d=await r.json();
+if(d.data.status==='COMPLETED'){const out=d.data.output;const expenses=out.expenses||[];if(!expenses.length){pr.innerHTML='<div class="finding finding-warning">⚠️ 未识别到费用</div>';return;}
+let h=`<div class="finding finding-ok">📁 ${fn} · ${expenses.length}笔</div>`;expenses.forEach((e,i)=>{h+=`<div style="background:#f8fafc;border:1px solid var(--bd);border-radius:6px;padding:8px;margin:4px 0;display:flex;justify-content:space-between"><div><strong>¥${parseFloat(e.amount||0).toFixed(2)}</strong> ${e.description||''}</div><button class="btn btn-p btn-sm" onclick="addParsed(${i})">填入</button></div>`;});h+=`<button class="btn btn-p btn-sm" onclick="addAllParsed()">全部填入</button>`;window._pe=expenses;pr.innerHTML=h;return;}
+if(d.data.status==='FAILED'){pr.innerHTML=`<div class="finding finding-critical">❌ ${d.data.error}</div>`;return;}}catch(e){}}pr.innerHTML='<div class="finding finding-warning">⚠️ 超时</div>';}
+function addParsed(i){const e=window._pe[i];items.push({...e,amount:String(e.amount||'')});renderItems();}
 function addAllParsed(){window._pe.forEach(e=>items.push({...e,amount:String(e.amount||'')}));renderItems();toast(`已添加${window._pe.length}笔`,'success');}
 
-// 提交报销（v1.5: 携带 request_id）
-async function submitReimb(){
-const valid=items.filter(it=>it.date&&it.category&&it.amount);
-if(!valid.length){toast('请至少填写一行','warning');return;}
-document.getElementById('submitStatus').innerHTML='<div class="spinner"></div>';
-document.getElementById('submitResult').innerHTML='';
-try{
-const vr=await fetch(API+'/validate-batch',{method:'POST',headers:h(true),body:JSON.stringify({expenses:valid})});
-const vd=await vr.json();
-let crits=0;(vd.data?.results||[]).forEach(r=>{if(r.findings.some(f=>f.severity==='critical'))crits++;});
-if(crits>0){
-let h='<div style="margin-top:12px">';
-vd.data.results.forEach(r=>{const f=r.findings.filter(x=>x.severity!=='ok');if(f.length)h+=`<div class="finding finding-critical">${f.map(x=>`${x.icon} ${x.message}`).join('; ')}</div>`;});
-h+='</div>';document.getElementById('submitResult').innerHTML=h;document.getElementById('submitStatus').innerHTML='❌';return;
-}
-document.getElementById('submitResult').innerHTML=`<div class="finding finding-ok">✅ 验证通过</div><div style="margin-top:10px"><button class="btn btn-ok" onclick="doSubmit()">✅ 确认提交</button></div>`;
-document.getElementById('submitStatus').innerHTML='✅';
-}catch(e){document.getElementById('submitStatus').innerHTML='❌';toast(e.message,'error');}
-}
+function collectFormData(){return{expense_type:document.getElementById('fExpenseType').value,reason:document.getElementById('fReason').value,invoice_number:document.getElementById('fInvoiceNo').value,invoice_amount:document.getElementById('fInvoiceAmt').value,invoice_date:document.getElementById('fInvoiceDate').value,account_name:document.getElementById('fAccountName').value,account_number:document.getElementById('fAccountNumber').value,bank_name:document.getElementById('fBankName').value};}
 
-async function doSubmit(){
-const valid=items.filter(it=>it.date&&it.category&&it.amount).map(it=>({...it,amount:parseFloat(it.amount)}));
-const reqId=rid(); // v1.5: request_id 幂等
-try{
-const r=await fetch(API+'/reimbursements',{method:'POST',headers:{...h(true),'X-Request-ID':reqId},body:JSON.stringify({items:valid,request_id:reqId})});
-const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}
-const idem=d.data?.idempotent;
-toast(idem?'⚠️ 重复请求，返回已有记录':'🎉 提交成功! 单号: '+d.data.id, idem?'warning':'success');
-items=[newI()];renderItems();document.getElementById('submitResult').innerHTML='';document.getElementById('submitStatus').innerHTML='';
-setTimeout(()=>go('list'),800);
-}catch(e){toast(e.message,'error');}
-}
+async function saveDraft(){const data={...collectFormData(),items};const r=await fetch(API+'/reimbursements/draft',{method:'POST',headers:h(true),body:JSON.stringify(data)});const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}curReimbId=d.data.id;toast('草稿已保存','success');}
 
-// 列表
-async function loadList(){
-try{
-const s=document.getElementById('listFilter').value;
-const r=await fetch(API+'/reimbursements?status='+s,{headers:h()});const d=await r.json();
-const data=d.data||[];
-document.getElementById('listBody').innerHTML=data.map(x=>`<tr>
-<td><strong>${x.id}</strong></td><td>${x.applicant_name}</td><td>${x.department}</td><td>¥${x.total_amount.toFixed(2)}</td>
-<td><span class="badge badge-${x.status}">${SD[x.status]||x.status}</span></td><td>v${x.version}</td>
-<td style="font-size:11px">${miniSteps(x.status)}</td><td style="font-size:11px">${x.updated_at}</td>
-<td><button class="btn-link" onclick="viewDetail('${x.id}')">详情</button>${U.role==='admin'?`<button class="btn-link" style="color:var(--err)" onclick="delR('${x.id}')">删除</button>`:''}</td></tr>`).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--t3);padding:24px">暂无</td></tr>';
-}catch(e){toast('加载失败','error');}
-}
+async function submitReimb(){const valid=items.filter(it=>it.date&&it.category&&it.amount);if(!valid.length){toast('请至少填写一行','warning');return;}
+const fd=collectFormData();if(!fd.reason||fd.reason.length<10){toast('事由不少于10字','warning');return;}
+if(!fd.invoice_number){toast('发票号码必填','warning');return;}
+if(!fd.account_name||!fd.account_number||!fd.bank_name){toast('收款信息不完整','warning');return;}
+document.getElementById('submitResult').innerHTML='<div class="spinner"></div>';
+try{const reqId=rid();const r=await fetch(API+'/reimbursements',{method:'POST',headers:{...h(true),'X-Request-ID':reqId},body:JSON.stringify({items:valid.map(it=>({...it,amount:parseFloat(it.amount)})),request_id:reqId,...fd})});const d=await r.json();
+if(d.code!==0){document.getElementById('submitResult').innerHTML=`<div class="finding finding-critical">❌ ${d.message}</div>`;return;}
+toast('🎉 提交成功! 单号: '+(d.data.reimb_number||d.data.id),'success');
+if(d.data.duplicates&&d.data.duplicates.length){let h='';d.data.duplicates.forEach(dd=>{h+=`<div class="finding finding-${dd.risk==='high'?'critical':'warning'}">⚠️ ${dd.detail}</div>`;});document.getElementById('submitResult').innerHTML=h;}else{document.getElementById('submitResult').innerHTML='';}
+items=[newI()];attFiles=[];curReimbId=null;renderItems();setTimeout(()=>go('list'),800);
+}catch(e){document.getElementById('submitResult').innerHTML=`<div class="finding finding-critical">❌ ${e.message}</div>`;}}
 
-// 详情
-async function viewDetail(rid){
-const r=await fetch(API+'/reimbursements/'+rid,{headers:h()});const d=await r.json();
-if(d.code!==0){toast(d.message,'error');return;}const x=d.data;
-let stepsH=x.approval_steps.map(s=>`<span class="step-dot ${s.status==='APPROVED'?'done':s.status==='PENDING'?'current':''}">${s.step_name}:${s.approver_name||'?'} <span class="badge badge-${s.status}">${s.status}</span></span>`).join('<span class="step-arrow">→</span>');
+async function loadList(){try{const s=document.getElementById('listStatus').value;const rl=document.getElementById('listRisk').value;
+let url=API+'/reimbursements?status='+s;if(rl)url+='&risk_level='+rl;
+const r=await fetch(url,{headers:h()});const d=await r.json();const data=d.data||[];
+document.getElementById('listBody').innerHTML=data.map(x=>`<tr><td><strong>${x.reimb_number||x.id}</strong></td><td>${x.applicant_name}</td><td>${x.department}</td><td>${x.expense_type_display||ETYPES[x.expense_type]||x.expense_type||'-'}</td><td>¥${x.total_amount.toFixed(2)}</td><td><span class="badge badge-${x.status}">${SD[x.status]||x.status}</span></td><td><span class="badge badge-${RDCLS[x.risk_level||'none']}">${RD[x.risk_level||'none']}</span></td><td style="font-size:11px">${x.updated_at}</td><td><button class="btn-link" onclick="viewDetail('${x.id}')">详情</button>${U.role==='admin'&&['DRAFT','SUBMITTED','REJECTED'].includes(x.status)?`<button class="btn-link" style="color:var(--err)" onclick="delR('${x.id}')">删除</button>`:''}</td></tr>`).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--t3);padding:24px">暂无</td></tr>';
+}catch(e){toast('加载失败','error');}}
+
+// 详情弹窗
+async function viewDetail(rid){const r=await fetch(API+'/reimbursements/'+rid,{headers:h()});const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}const x=d.data;
+let stepsH=x.approval_steps.map(s=>`<span class="step-dot ${s.status==='APPROVED'?'done':s.status==='REJECTED'?'rejected':s.status==='PENDING'?'current':''}">${s.step_name}:${s.approver_name||'?'} <span class="badge badge-${s.status==='APPROVED'?'APPROVED':s.status==='REJECTED'?'REJECTED':'SUBMITTED'}">${s.status}</span></span>`).join('<span class="step-arrow">→</span>');
 let itemsH=x.items.map((it,i)=>`<tr><td>${i+1}</td><td>${it.date}</td><td>${CAT[it.category]||it.category}</td><td>¥${parseFloat(it.amount).toFixed(2)}</td><td>${it.description}</td><td>${it.receipt_no||'-'}</td></tr>`).join('');
+let attH=(x.attachments||[]).map(a=>`<div class="att-item">📎 ${a.file_name} <span class="tag">${a.attachment_type}</span></div>`).join('')||'<div style="color:var(--t3);font-size:12px">无附件</div>';
+let riskH=x.risk_level&&x.risk_level!=='none'?`<span class="badge badge-${RDCLS[x.risk_level]}">${RD[x.risk_level]}</span>`:'<span class="badge badge-risk_none">无风险</span>';
+let dupH=(x.duplicates||[]).map(dd=>`<div class="finding finding-${dd.risk==='high'?'critical':'warning'}">⚠️ ${dd.detail}</div>`).join('');
+// 凭证审核
+let vrH='';if(x.voucher_review){const vr=x.voucher_review;vrH=`<div class="card"><div class="card-title">🔍 凭证审核结果</div><div class="fr3"><div class="check-item"><input type="checkbox" ${vr.invoice_complete?'checked':''} disabled> 发票信息完整</div><div class="check-item"><input type="checkbox" ${vr.amount_match?'checked':''} disabled> 发票金额匹配</div><div class="check-item"><input type="checkbox" ${vr.attachment_complete?'checked':''} disabled> 附件完整</div><div class="check-item"><input type="checkbox" ${vr.no_duplicate?'checked':''} disabled> 未发现重复</div><div class="check-item"><input type="checkbox" ${vr.category_reasonable?'checked':''} disabled> 费用类型合理</div><div class="check-item"><input type="checkbox" ${vr.policy_compliant?'checked':''} disabled> 符合报销规则</div></div>${vr.review_comment?`<div style="margin-top:8px;font-size:12px;color:var(--t2)">意见: ${vr.review_comment}</div>`:''}</div>`;}
+// 付款
+let payH='';if(x.payment){const p=x.payment;payH=`<div class="card"><div class="card-title">💰 付款信息</div><div class="fr3"><div><strong>实付金额:</strong> ¥${p.paid_amount.toFixed(2)}</div><div><strong>付款日期:</strong> ${p.payment_date}</div><div><strong>银行流水号:</strong> ${p.bank_serial}</div><div><strong>付款人:</strong> ${p.paid_by_name}</div></div>${p.payment_note?`<div style="margin-top:8px;font-size:12px">备注: ${p.payment_note}</div>`:''}</div>`;}
+// 操作按钮
 let actionsH='';
-if(x.status==='SUBMITTED'&&U.role!=='applicant')actionsH+=`<button class="btn btn-p" onclick="actR('${rid}','start_review')">开始审核</button>`;
-if(x.status==='UNDER_REVIEW'&&U.role!=='applicant')actionsH+=`<button class="btn btn-ok" onclick="actR('${rid}','approve')">通过</button><button class="btn btn-e" onclick="actR('${rid}','reject')">驳回</button>`;
-if(x.status==='APPROVED'&&U.role==='admin')actionsH+=`<button class="btn btn-ok" onclick="actR('${rid}','reimburse')">确认打款</button>`;
+if(x.status==='SUBMITTED'&&(U.role==='dept_manager'||U.role==='admin'))actionsH+=`<button class="btn btn-p" onclick="actR('${rid}','start_review')">开始审核</button>`;
+if(x.status==='DEPT_APPROVING'&&(U.role==='dept_manager'||U.role==='admin'))actionsH+=`<button class="btn btn-ok" onclick="actR('${rid}','dept_approve')">部门审批通过</button><button class="btn btn-e" onclick="actR('${rid}','reject')">驳回</button>`;
+if(x.status==='FINANCE_REVIEWING'&&(U.role==='finance_reviewer'||U.role==='admin')){actionsH+=`<button class="btn btn-ok" onclick="actR('${rid}','finance_approve')">财务审核通过</button><button class="btn btn-e" onclick="actR('${rid}','reject')">驳回</button>`;if(!x.voucher_review||x.voucher_review.review_result!=='passed')actionsH+=`<button class="btn btn-w" onclick="showVoucherReview('${rid}')">🔍 凭证审核</button>`;}
+if(x.status==='APPROVED'&&(U.role==='finance_reviewer'||U.role==='admin'))actionsH+=`<button class="btn btn-w" onclick="actR('${rid}','mark_payment')">标记待付款</button>`;
+if(x.status==='PAYMENT_PENDING'&&(U.role==='cashier'||U.role==='admin'))actionsH+=`<button class="btn btn-ok" onclick="showPayment('${rid}',${x.total_amount})">💰 付款处理</button>`;
+if(x.status==='PAID'&&(U.role==='cashier'||U.role==='admin'))actionsH+=`<button class="btn btn-o" onclick="actR('${rid}','archive')">📦 归档</button>`;
 if(x.status==='REJECTED'&&x.applicant_id===U.user_id)actionsH+=`<button class="btn btn-p" onclick="actR('${rid}','resubmit')">重新提交</button>`;
-if(['SUBMITTED','UNDER_REVIEW','APPROVED'].includes(x.status))actionsH+=`<button class="btn btn-o" onclick="exportR('${rid}')">📤 导出Excel</button>`;
+if(x.status==='ARCHIVED')actionsH+=`<button class="btn btn-o" onclick="exportArchive('${rid}')">📥 导出JSON</button> <button class="btn btn-o" onclick="printArchive('${rid}')">🖨️ 打印</button>`;
 
-const modal=document.createElement('div');
-modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:center;justify-content:center';
-modal.onclick=e=>{if(e.target===modal)modal.remove();};
-modal.innerHTML=`<div style="background:#fff;border-radius:12px;padding:24px;width:90%;max-width:720px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>报销单 ${rid}</h3><span class="badge badge-${x.status}" style="font-size:13px;padding:4px 12px">${SD[x.status]||x.status}</span></div>
-<div style="margin-bottom:12px"><strong>申请人:</strong> ${x.applicant_name} · ${x.department} &nbsp;|&nbsp; <strong>金额:</strong> ¥${x.total_amount.toFixed(2)} &nbsp;|&nbsp; <strong>版本:</strong> v${x.version} &nbsp;|&nbsp; <strong>request_id:</strong> <span class="tag">${x.request_id||'-'}</span></div>
+const modal=document.createElement('div');modal.className='modal-bg';modal.onclick=e=>{if(e.target===modal)modal.remove();};
+modal.innerHTML=`<div class="modal-box">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><h3>报销单 ${x.reimb_number||rid}</h3><span class="badge badge-${x.status}" style="font-size:13px;padding:4px 12px">${SD[x.status]||x.status}</span></div>
+<div style="margin-bottom:12px;font-size:13px"><strong>申请人:</strong> ${x.applicant_name} · ${x.department} | <strong>金额:</strong> ¥${x.total_amount.toFixed(2)} | <strong>费用类型:</strong> ${x.expense_type_display||ETYPES[x.expense_type]||'-'} | <strong>风险:</strong> ${riskH}${x.account_number_display?` | <strong>收款账号:</strong> ${x.account_number_display}`:''}</div>
+${x.reason?`<div style="margin-bottom:12px;font-size:13px"><strong>事由:</strong> ${x.reason}</div>`:''}
+${x.invoice_number?`<div style="margin-bottom:12px;font-size:12px;color:var(--t2)"><strong>发票:</strong> ${x.invoice_number} | 金额: ¥${(x.invoice_amount||0).toFixed(2)} | 日期: ${x.invoice_date||'-'}</div>`:''}
 <div style="margin-bottom:16px"><strong>审批流:</strong><div class="step-flow" style="margin-top:8px">${stepsH}</div></div>
+${dupH?`<div style="margin-bottom:12px">${dupH}</div>`:''}
 <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>日期</th><th>类别</th><th>金额</th><th>说明</th><th>票据号</th></tr></thead><tbody>${itemsH}</tbody></table></div>
-${x.is_immutable?'<div class="finding finding-info" style="margin-top:12px">🔒 此报销单已审批，数据不可篡改</div>':''}
+<div style="margin-top:12px"><strong>📎 附件</strong>${attH}</div>
+${vrH}${payH}
+${x.is_immutable?'<div class="finding finding-info" style="margin-top:12px">🔒 此报销单已不可修改</div>':''}
 ${actionsH?`<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">${actionsH}</div>`:''}
-<div style="margin-top:16px;text-align:right"><button class="btn btn-o" onclick="this.closest('div[style]').parentElement.remove()">关闭</button></div>
+<div style="margin-top:16px;text-align:right"><button class="btn btn-o" onclick="this.closest('.modal-bg').remove()">关闭</button></div>
 </div>`;
-document.body.appendChild(modal);
-}
+document.body.appendChild(modal);}
 
-async function actR(rid,action){
-const comment=action==='reject'?prompt('请输入驳回理由：')||'':'';
-try{
-const r=await fetch(API+`/reimbursements/${rid}/action`,{method:'POST',headers:h(true),body:JSON.stringify({action,comment})});
-const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}
-toast(action==='approve'?'✅ 已通过':action==='reject'?'❌ 已驳回':'操作成功','success');
-document.querySelector('div[style*="position:fixed"]')?.remove();
-if(document.getElementById('listBody').children.length)loadList();
-}catch(e){toast(e.message,'error');}
-}
+async function actR(rid,action){const comment=action==='reject'?prompt('请输入驳回理由：')||'':'';
+try{const r=await fetch(API+`/reimbursements/${rid}/action`,{method:'POST',headers:h(true),body:JSON.stringify({action,comment})});const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}
+toast('操作成功','success');document.querySelector('.modal-bg')?.remove();if(document.getElementById('listBody').children.length)loadList();loadDash();}catch(e){toast(e.message,'error');}}
 async function delR(rid){if(!confirm('确定删除?'))return;await fetch(API+`/reimbursements/${rid}`,{method:'DELETE',headers:h()});toast('已删除','success');loadList();}
-async function exportR(rid){
-try{
-const r=await fetch(API+`/export/${rid}`,{method:'POST',headers:h()});const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}
-toast('导出任务已提交','info');const tid=d.data.task_id;
-for(let i=0;i<20;i++){await new Promise(r=>setTimeout(r,800));
-const tr=await fetch(API+'/tasks/'+tid,{headers:h()});const td=await tr.json();
-if(td.data.status==='COMPLETED'){window.open(window.location.origin+'/exports/'+encodeURIComponent(td.data.output.filename),'_blank');toast('导出成功!','success');return;}
-if(td.data.status==='FAILED'){toast('导出失败: '+td.data.error,'error');return;}}
-toast('导出超时','warning');
-}catch(e){toast(e.message,'error');}
-}
 
-// 审核
-async function loadAuditSel(){
-try{const r=await fetch(API+'/reimbursements?status=ALL',{headers:h()});const d=await r.json();
-document.getElementById('auditSelect').innerHTML='<option value="">-- 请选择报销单 --</option>'+d.data.map(x=>`<option value="${x.id}">${x.id} — ${x.applicant_name} ¥${x.total_amount.toFixed(2)} [${SD[x.status]||x.status}]</option>`).join('');
-}catch(e){}}
-async function runAudit(){
-const rid=document.getElementById('auditSelect').value;if(!rid){toast('请选择','warning');return;}
-const ar=document.getElementById('auditResult');ar.innerHTML='<div style="padding:20px;text-align:center"><div class="spinner"></div> 审核中...</div>';
-try{
-const r=await fetch(API+`/audit/${rid}`,{method:'POST',headers:h()});const d=await r.json();if(d.code!==0){ar.innerHTML=`<div class="finding finding-critical">❌ ${d.message}</div>`;return;}
-let crit=0,warn=0,ok=0;
-Object.values(d.data.findings).forEach(fl=>{fl.forEach(f=>{if(f.severity==='critical')crit++;else if(f.severity==='warning')warn++;else if(f.severity==='ok')ok++;});});
-let h=`<div class="stat-grid"><div class="stat-card"><div class="label">🔴 严重</div><div class="value" style="color:var(--err)">${crit}</div></div><div class="stat-card"><div class="label">🟡 警告</div><div class="value" style="color:var(--warn)">${warn}</div></div><div class="stat-card"><div class="label">✅ 通过</div><div class="value" style="color:var(--ok)">${ok}</div></div></div>`;
-h+=`<div class="card"><div class="card-title">📋 审计明细</div><div style="overflow-x:auto"><table><thead><tr><th>#</th><th>日期</th><th>类别</th><th>金额</th><th>说明</th><th>结果</th></tr></thead><tbody>`;
-d.data.items.forEach((it,i)=>{const fl=d.data.findings[String(i)]||[];const issues=fl.filter(f=>f.severity!=='ok');
-h+=`<tr style="background:${fl.some(f=>f.severity==='critical')?'var(--err-bg)':fl.some(f=>f.severity==='warning')?'var(--warn-bg)':'transparent'}"><td>${i+1}</td><td>${it.date}</td><td>${CAT[it.category]||it.category}</td><td>¥${parseFloat(it.amount).toFixed(2)}</td><td>${it.description||'-'}</td><td>${issues.length?issues.map(f=>`<div class="finding finding-${f.severity}">${f.icon} ${f.message}</div>`).join(''):'<span class="badge badge-APPROVED">✅ 通过</span>'}</td></tr>`;});
-h+='</tbody></table></div></div>';
-const rd=await(await fetch(API+'/reimbursements/'+rid,{headers:h()})).json();
-if(rd.data&&['SUBMITTED','UNDER_REVIEW'].includes(rd.data.status)&&U.role!=='applicant'){
-h+=`<div class="card"><div class="card-title">✍️ 审批</div><div class="form-group"><label>审批意见</label><textarea id="auditComment" rows="2" placeholder="可选"></textarea></div><div style="display:flex;gap:10px">${rd.data.status==='SUBMITTED'?`<button class="btn btn-p" onclick="actR('${rid}','start_review')">开始审核</button>`:''}${rd.data.status==='UNDER_REVIEW'?`<button class="btn btn-ok" onclick="actR('${rid}','approve')">通过</button><button class="btn btn-e" onclick="actR('${rid}','reject')">驳回</button>`:''}</div></div>`;}
-ar.innerHTML=h;
-}catch(e){ar.innerHTML=`<div class="finding finding-critical">❌ ${e.message}</div>`;}
-}
+// 凭证审核弹窗
+function showVoucherReview(rid){const modal=document.createElement('div');modal.className='modal-bg';modal.onclick=e=>{if(e.target===modal)modal.remove();};
+modal.innerHTML=`<div class="modal-box"><h3 style="margin-bottom:16px">🔍 凭证审核</h3>
+<div class="check-item"><input type="checkbox" id="vr_ic"> 发票信息完整</div>
+<div class="check-item"><input type="checkbox" id="vr_am"> 发票金额匹配</div>
+<div class="check-item"><input type="checkbox" id="vr_ac"> 附件完整</div>
+<div class="check-item"><input type="checkbox" id="vr_nd"> 未发现重复报销</div>
+<div class="check-item"><input type="checkbox" id="vr_cr"> 费用类型合理</div>
+<div class="check-item"><input type="checkbox" id="vr_pc"> 符合公司报销规则</div>
+<div class="form-group" style="margin-top:12px"><label>审核意见（不通过时必填）</label><textarea id="vr_comment" rows="2"></textarea></div>
+<div style="display:flex;gap:10px;margin-top:12px"><button class="btn btn-ok" onclick="doVoucherReview('${rid}')">提交审核</button><button class="btn btn-o" onclick="this.closest('.modal-bg').remove()">取消</button></div></div>`;
+document.body.appendChild(modal);}
+async function doVoucherReview(rid){const data={invoice_complete:document.getElementById('vr_ic').checked?1:0,amount_match:document.getElementById('vr_am').checked?1:0,attachment_complete:document.getElementById('vr_ac').checked?1:0,no_duplicate:document.getElementById('vr_nd').checked?1:0,category_reasonable:document.getElementById('vr_cr').checked?1:0,policy_compliant:document.getElementById('vr_pc').checked?1:0,review_comment:document.getElementById('vr_comment').value};
+const r=await fetch(API+`/reimbursements/${rid}/voucher-review`,{method:'POST',headers:h(true),body:JSON.stringify(data)});const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}
+toast(d.data.all_passed?'✅ 凭证审核全部通过':'⚠️ 凭证审核未通过','success');document.querySelector('.modal-bg')?.remove();}
+
+// 付款弹窗
+function showPayment(rid,totalAmt){const modal=document.createElement('div');modal.className='modal-bg';modal.onclick=e=>{if(e.target===modal)modal.remove();};
+modal.innerHTML=`<div class="modal-box"><h3 style="margin-bottom:16px">💰 付款处理</h3>
+<div class="fr3"><div class="form-group"><label>审批金额</label><input value="¥${totalAmt.toFixed(2)}" disabled></div>
+<div class="form-group"><label>实付金额 <span class="req">*</span></label><input type="number" step="0.01" id="pay_amt" value="${totalAmt.toFixed(2)}"></div>
+<div class="form-group"><label>付款日期 <span class="req">*</span></label><input type="date" id="pay_date"></div></div>
+<div class="fr3"><div class="form-group"><label>付款账户</label><input id="pay_from"></div>
+<div class="form-group"><label>收款账户</label><input id="pay_to"></div>
+<div class="form-group"><label>银行流水号 <span class="req">*</span></label><input id="pay_serial"></div></div>
+<div class="form-group"><label>付款凭证 <span class="req">*</span></label><input id="pay_voucher" placeholder="凭证编号或链接"></div>
+<div class="form-group"><label>差异说明（实付≠审批时必填）</label><textarea id="pay_diff" rows="2"></textarea></div>
+<div class="form-group"><label>备注</label><textarea id="pay_note" rows="2"></textarea></div>
+<div style="display:flex;gap:10px;margin-top:12px"><button class="btn btn-ok" onclick="doPayment('${rid}')">确认付款</button><button class="btn btn-o" onclick="this.closest('.modal-bg').remove()">取消</button></div></div>`;
+document.body.appendChild(modal);}
+async function doPayment(rid){const data={paid_amount:parseFloat(document.getElementById('pay_amt').value),payment_date:document.getElementById('pay_date').value,payment_account:document.getElementById('pay_from').value,receive_account:document.getElementById('pay_to').value,bank_serial:document.getElementById('pay_serial').value,payment_voucher:document.getElementById('pay_voucher').value,difference_note:document.getElementById('pay_diff').value,payment_note:document.getElementById('pay_note').value};
+const r=await fetch(API+`/reimbursements/${rid}/payment`,{method:'POST',headers:h(true),body:JSON.stringify(data)});const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}
+toast('💰 付款成功','success');document.querySelector('.modal-bg')?.remove();}
+
+async function exportArchive(rid){const r=await fetch(API+`/reimbursements/${rid}/archive`,{headers:h()});const d=await r.json();if(d.code!==0){toast(d.message,'error');return;}
+const blob=new Blob([JSON.stringify(d.data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`archive_${rid}.json`;a.click();URL.revokeObjectURL(url);toast('已导出','success');}
+function printArchive(rid){window.print();}
+
+// 合规审核 Tab
+let auditTab='pending';
+function switchAuditTab(tab){auditTab=tab;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');loadAuditTab();}
+async function loadAuditTab(){const statusMap={pending:'DEPT_APPROVING',finance:'FINANCE_REVIEWING',payment:'PAYMENT_PENDING'};
+const status=statusMap[auditTab]||'ALL';try{const r=await fetch(API+'/reimbursements?status='+status,{headers:h()});const d=await r.json();const data=d.data||[];
+document.getElementById('auditList').innerHTML=data.length?data.map(x=>`<div class="card" style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:center"><div><strong>${x.reimb_number||x.id}</strong> — ${x.applicant_name} · ${x.department} · ¥${x.total_amount.toFixed(2)} <span class="badge badge-${RDCLS[x.risk_level||'none']}">${RD[x.risk_level||'none']}</span></div><div style="display:flex;gap:6px">${auditTab==='pending'&&(U.role==='dept_manager'||U.role==='admin')?`<button class="btn btn-ok btn-sm" onclick="actR('${x.id}','dept_approve')">通过</button><button class="btn btn-e btn-sm" onclick="actR('${x.id}','reject')">驳回</button>`:''}${auditTab==='finance'&&(U.role==='finance_reviewer'||U.role==='admin')?`<button class="btn btn-w btn-sm" onclick="showVoucherReview('${x.id}')">🔍 凭证审核</button><button class="btn btn-ok btn-sm" onclick="actR('${x.id}','finance_approve')">通过</button><button class="btn btn-e btn-sm" onclick="actR('${x.id}','reject')">驳回</button>`:''}${auditTab==='payment'&&(U.role==='cashier'||U.role==='admin')?`<button class="btn btn-ok btn-sm" onclick="showPayment('${x.id}',${x.total_amount})">💰 付款</button>`:''}<button class="btn btn-o btn-sm" onclick="viewDetail('${x.id}')">详情</button></div></div></div>`).join(''):'<div style="text-align:center;color:var(--t3);padding:40px">暂无待处理单据</div>';
+}catch(e){toast('加载失败','error');}}
 
 // 汇总
-async function loadSummary(){
-try{const r=await fetch(API+'/summary',{headers:h()});const d=await r.json();if(d.code!==0)return;const s=d.data;
-document.getElementById('sumStats').innerHTML=`<div class="stat-card"><div class="label">总额</div><div class="value">¥${(s.total_amount||0).toLocaleString('zh-CN',{minimumFractionDigits:2})}</div><div class="sub">${s.total_claims}笔</div></div>${Object.entries(s.by_status||{}).map(([k,v])=>`<div class="stat-card"><div class="label">${v.display}</div><div class="value" style="color:${k==='APPROVED'||k==='REIMBURSED'?'var(--ok)':k==='REJECTED'?'var(--err)':'var(--warn)'}">${v.count}</div><div class="sub">¥${v.amount.toFixed(2)}</div></div>`).join('')}`;
+async function loadSummary(){try{const r=await fetch(API+'/summary',{headers:h()});const d=await r.json();if(d.code!==0)return;const s=d.data;
+document.getElementById('sumStats').innerHTML=`<div class="stat-card"><div class="label">总额</div><div class="value">¥${(s.total_amount||0).toLocaleString('zh-CN',{minimumFractionDigits:2})}</div><div>${s.total_claims}笔</div></div><div class="stat-card"><div class="label">本月报销</div><div class="value">¥${(s.monthly_amount||0).toFixed(2)}</div></div><div class="stat-card"><div class="label">本月付款</div><div class="value">¥${(s.monthly_payment||0).toFixed(2)}</div></div><div class="stat-card"><div class="label">高风险</div><div class="value" style="color:var(--err)">${s.high_risk_count||0}</div></div>`;
 const mc=Math.max(...(s.by_category||[]).map(c=>c.amount),1);
 document.getElementById('sumByCat').innerHTML=(s.by_category||[]).map(c=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px"><span>${CAT[c.category]||c.category}</span><span>¥${c.amount.toFixed(2)} (${c.count}笔)</span></div><div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:${c.amount/mc*100}%;background:var(--p-l);border-radius:3px"></div></div></div>`).join('')||'暂无';
-const ms=Math.max(...Object.values(s.by_status||{}).map(v=>v.amount),1);
-document.getElementById('sumByStatus').innerHTML=Object.entries(s.by_status||{}).map(([k,v])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px"><span>${v.display}</span><span>¥${v.amount.toFixed(2)} (${v.count}笔)</span></div><div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:${v.amount/ms*100}%;background:${k==='APPROVED'||k==='REIMBURSED'?'var(--ok)':k==='REJECTED'?'var(--err)':'var(--warn)'};border-radius:3px"></div></div></div>`).join('')||'暂无';
-}catch(e){toast('加载失败','error');}
-}
+const md=Math.max(...Object.values(s.by_department||{}).map(v=>v.amount),1);
+document.getElementById('sumByDept').innerHTML=Object.entries(s.by_department||{}).map(([k,v])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px"><span>${k}</span><span>¥${v.amount.toFixed(2)} (${v.count}笔)</span></div><div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:${v.amount/md*100}%;background:var(--ok);border-radius:3px"></div></div></div>`).join('')||'暂无';
+const ms2=Math.max(...Object.values(s.by_status||{}).map(v=>v.amount),1);
+document.getElementById('sumByStatus').innerHTML=Object.entries(s.by_status||{}).map(([k,v])=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px"><span>${v.display}</span><span>¥${v.amount.toFixed(2)} (${v.count}笔)</span></div><div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:${v.amount/ms2*100}%;background:${k==='APPROVED'||k==='PAID'||k==='ARCHIVED'?'var(--ok)':k==='REJECTED'?'var(--err)':'var(--warn)'};border-radius:3px"></div></div></div>`).join('')||'暂无';
+}catch(e){toast('加载失败','error');}}
 
-// 日志
-async function loadLogs(){
-try{const r=await fetch(API+'/logs?limit=50',{headers:h()});const d=await r.json();
-if(d.code!==0){document.getElementById('logsBody').innerHTML='<tr><td colspan="6">无权限</td></tr>';return;}
-document.getElementById('logsBody').innerHTML=(d.data||[]).map(l=>`<tr><td style="font-size:12px">${l.timestamp}</td><td>${l.user_name}</td><td><span class="badge badge-UNDER_REVIEW">${l.action}</span></td><td>${l.target_type}:${l.target_id}</td><td style="font-size:11px;color:var(--t3);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.before_data||'-'}</td><td style="font-size:11px;color:var(--ok);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.after_data||'-'}</td></tr>`).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--t3)">暂无日志</td></tr>';
-}catch(e){document.getElementById('logsBody').innerHTML='<tr><td colspan="6">加载失败</td></tr>';}
-}
+// 审计日志
+async function loadLogs(){try{let url=API+'/logs?limit=200';const t=document.getElementById('logTarget').value;if(t)url+='&target_id='+t;const a=document.getElementById('logAction').value;if(a)url+='&action='+a;const sd=document.getElementById('logStart').value;if(sd)url+='&start_date='+sd;const ed=document.getElementById('logEnd').value;if(ed)url+='&end_date='+ed;
+const r=await fetch(url,{headers:h()});const d=await r.json();if(d.code!==0){document.getElementById('logsBody').innerHTML='<tr><td colspan="8">无权限</td></tr>';return;}
+document.getElementById('logsBody').innerHTML=(d.data||[]).map(l=>`<tr><td style="font-size:11px">${l.timestamp}</td><td>${l.user_name}</td><td><span class="tag">${l.user_role||'-'}</span></td><td><span class="badge badge-UNDER_REVIEW">${l.action}</span></td><td>${l.target_type}:${l.target_id}</td><td>${l.before_status||'-'}</td><td>${l.after_status||'-'}</td><td style="font-size:11px;color:var(--t3);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.after_data||'-'}</td></tr>`).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--t3)">暂无</td></tr>';
+}catch(e){document.getElementById('logsBody').innerHTML='<tr><td colspan="8">加载失败</td></tr>';}}
+function exportLogs(){const rows=document.getElementById('logsBody').querySelectorAll('tr');const data=[];rows.forEach(r=>{const cells=r.querySelectorAll('td');if(cells.length>=8)data.push({time:cells[0].textContent,user:cells[1].textContent,role:cells[2].textContent,action:cells[3].textContent,target:cells[4].textContent,before:cells[5].textContent,after:cells[6].textContent});});
+const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='audit_logs.json';a.click();URL.revokeObjectURL(url);toast('已导出','success');}
 
 // Data Guard
-async function runGuard(){
-const gr=document.getElementById('guardResult');gr.innerHTML='<div style="padding:20px;text-align:center"><div class="spinner"></div> 检查中...</div>';
-try{
-const r=await fetch(API+'/guard/check',{method:'POST',headers:h()});const d=await r.json();
-if(d.code!==0){gr.innerHTML=`<div class="finding finding-critical">❌ ${d.message}</div>`;return;}
-const issues=d.data.issues||[];
+async function runGuard(){const gr=document.getElementById('guardResult');gr.innerHTML='<div style="padding:20px;text-align:center"><div class="spinner"></div></div>';
+try{const r=await fetch(API+'/guard/check',{method:'POST',headers:h()});const d=await r.json();if(d.code!==0){gr.innerHTML=`<div class="finding finding-critical">❌ ${d.message}</div>`;return;}
+const issues=d.data.issues||[];const summary=d.data.summary||{};
 if(!issues.length){gr.innerHTML='<div class="guard-ok">✅ 数据一致性检查通过 — 无异常</div>';}
-else{
-let h=`<div class="guard-err">❌ 发现 ${issues.length} 个问题</div>`;
-issues.forEach(iss=>{h+=`<div class="finding finding-${iss.level==='CRITICAL'?'critical':'warning'}"><strong>[${iss.level}]</strong> ${iss.type}: ${iss.detail}</div>`;});
-gr.innerHTML=h;
-}
-}catch(e){gr.innerHTML=`<div class="finding finding-critical">❌ ${e.message}</div>`;}
-}
+else{let h=`<div class="guard-err">❌ 发现 ${issues.length} 个问题 (严重: ${summary.CRITICAL||0}, 警告: ${summary.WARNING||0})</div>`;
+// 按类型分组
+const byType=summary.by_type||{};
+Object.entries(byType).forEach(([tp,info])=>{h+=`<div class="card" style="margin-top:8px"><div class="card-title">${info.level==='CRITICAL'?'🔴':'🟡'} ${tp} (${info.count}条)</div>`;
+info.details.forEach(iss=>{h+=`<div class="finding finding-${iss.level==='CRITICAL'?'critical':'warning'}"><strong>[${iss.level}]</strong> ${iss.detail}</div>`;});h+='</div>';});
+gr.innerHTML=h;}
+}catch(e){gr.innerHTML=`<div class="finding finding-critical">❌ ${e.message}</div>`;}}
 
-async function loadRules(){
-try{const r=await fetch(API+'/rules',{headers:h()});const d=await r.json();
-if(d.code!==0){document.getElementById('rulesContent').innerHTML='无权限';return;}
-document.getElementById('rulesContent').innerHTML=`<table><thead><tr><th>规则ID</th><th>名称</th><th>金额范围</th><th>步骤数</th><th>审批人</th></tr></thead><tbody>${(d.data||[]).map(r=>`<tr><td>${r.id}</td><td>${r.name}</td><td>¥${r.min_amount} ~ ¥${r.max_amount>=999999999?'∞':r.max_amount}</td><td>${r.step_count}</td><td>${(r.steps||[]).map(s=>`${s.step_name}(${s.approver_id})`).join(' → ')}</td></tr>`).join('')}</tbody></table>`;
-}catch(e){document.getElementById('rulesContent').innerHTML='加载失败';}
-}
+async function loadRules(){try{const r=await fetch(API+'/rules',{headers:h()});const d=await r.json();if(d.code!==0){document.getElementById('rulesContent').innerHTML='无权限';return;}
+document.getElementById('rulesContent').innerHTML=`<table><thead><tr><th>规则</th><th>金额范围</th><th>步骤</th></tr></thead><tbody>${(d.data||[]).map(r=>`<tr><td>${r.name}</td><td>¥${r.min_amount} ~ ¥${r.max_amount>=999999999?'∞':r.max_amount}</td><td>${(r.steps||[]).map(s=>`${s.step_name}(${s.approver_id})`).join(' → ')}</td></tr>`).join('')}</tbody></table>`;}catch(e){document.getElementById('rulesContent').innerHTML='加载失败';}}
 
 // 初始化
-(async()=>{
-const saved=localStorage.getItem('user');
-if(saved){U=JSON.parse(saved);document.getElementById('loginBox').style.display='none';document.getElementById('sidebar').style.display='flex';document.getElementById('headerBar').style.display='flex';document.getElementById('mainArea').style.display='block';buildNav();go('dashboard');}
-else initLogin();
-})();
+(async()=>{const saved=localStorage.getItem('user');if(saved){U=JSON.parse(saved);showMain();}else initLogin();})();
 </script>
 </body></html>

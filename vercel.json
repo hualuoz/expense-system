@@ -8,6 +8,7 @@
         "includeFiles": [
           "app/**",
           "templates/**",
+          "tasks/**",
           "validate_expense.py",
           "file_parser.py",
           "policy.md",
